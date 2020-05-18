@@ -6,7 +6,6 @@
 
 '''
 现在我们有北上广、深圳、和沈阳5个城市空气质量数据，请绘制出5个城市的PM2.5随时间的变化情况
-
 '''
 import pandas as pd
 import matplotlib.pyplot as plt
