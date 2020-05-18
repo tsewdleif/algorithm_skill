@@ -16,7 +16,7 @@ df = pd.read_csv("./PM2.5/BeijingPM20100101_20151231.csv")
 # 之前所学习的DatetimeIndex可以理解为时间戳，那么现在我们要学习的PeriodIndex可以理解为时间段
 # 把分开的时间字符串通过periodIndex的方法转化为pandas的时间类型
 period = pd.PeriodIndex(year=df["year"], month=df["month"], day=df["day"], hour=df["hour"], freq="H")
-df["datetime"] = period # 增加一列
+df["datetime"] = period  # 增加一列
 print(df.head(10))
 
 # 把datetime设置为索引
@@ -33,8 +33,7 @@ _x = data.index
 
 _y = data.values
 
-plt.figure(figsize=(20,8),dpi=80)
-plt.plot(range(len(_x)),_y)
-plt.xticks(range(0,len(_x),10),list(_x)[::10], rotation=45)
+plt.figure(figsize=(20, 8), dpi=80)
+plt.plot(range(len(_x)), _y)
+plt.xticks(range(0, len(_x), 10), list(_x)[::10], rotation=45)
 plt.show()
-
