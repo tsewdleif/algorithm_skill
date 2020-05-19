@@ -7,3 +7,9 @@
 a = ['a','b']
 b = ['d']
 print(a+b)
+c = [1,2]
+d= [3,4]
+print(c+d)
+
+e = range(1,5)
+print(type(e),e)

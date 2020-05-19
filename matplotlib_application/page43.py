@@ -30,7 +30,7 @@ x_16 = [i + 2 * bar_width for i in x_14]
 plt.figure(figsize=(20, 8), dpi=80)
 
 # 绘制条形图
-plt.bar(range(len(a)), b_14, width=0.2, label="9月14日")
+plt.bar(range(len(a)), b_14, width=bar_width, label="9月14日")
 plt.bar(x_15, b_15, width=bar_width, label="9月15日")
 plt.bar(x_16, b_16, width=bar_width, label="9月16日")
 
