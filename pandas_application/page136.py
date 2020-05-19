@@ -37,15 +37,15 @@ print(df5)
 a = pd.DataFrame(
     {'a': range(7), 'b': range(7, 0, -1), 'c': ['one', 'one', 'one', 'two', 'two', 'two', 'two'], 'd': list("hjklmno")})
 b = a.set_index(["c", "d"])
-print("-"*100)
+print("-" * 100)
 print(b)
 print(b.loc["one"])
-print(b.loc["one","j"])
-print("-"*100)
+print(b.loc["one", "j"])
+print("-" * 100)
 
 # Series复合索引
 c = b["a"]
-print(type(c)) # Series类型
+print(type(c))  # Series类型
 print(c)
 print(c["one", "j"])
 # DataFrame复合索引
@@ -53,11 +53,10 @@ c2 = b[["a"]]
 print(type(c2))
 print(c2)
 print(c2.loc["one"].loc["j"])
-print("1-"*100)
+print("1-" * 100)
 
 # 复合索引交换索引
-d = a.set_index(["d","c"])["a"]
+d = a.set_index(["d", "c"])["a"]
 print(d)
-d = d.swaplevel()# 交换索引
+d = d.swaplevel()  # 交换索引
 print(d)
-

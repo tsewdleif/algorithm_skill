@@ -10,10 +10,9 @@
 '''
 import pandas as pd
 
-df = pd.date_range(start="20171230",end="20200531",freq="10D")
+df = pd.date_range(start="20171230", end="20200531", freq="10D")
 print(df)
 
 # 生成从start开始的频率为freq的periods个时间索引
-df2 = pd.date_range(start="20171230",periods=10,freq="10D")
+df2 = pd.date_range(start="20171230", periods=10, freq="10D")
 print(df2)
-
