@@ -17,7 +17,8 @@ def cat_dog_category():
     image_filenames = glob.glob('./dc/train/*.jpg') # 获取所有训练集图片路径
     image_filenames = np.random.permutation(image_filenames) # 乱序处理
     labels = list(map(lambda x: float(x.split('\\')[1].split('.')[0] == 'cat'), image_filenames)) # 若==成立，表示当前标签为cat，label=1； 若当前标签为dog，则label=0。
-    dataset = tf.data.Dataset.from_tensor_slices((image_filenames, labels)) # 传换成dataset格式
+    dataset = tf.data.Dataset.from_tensor_slices((image_filenames, labels)) # 传换ndarray成dataset格式
+    print(type(dataset),type(image_filenames))
     print(dataset)
 #     读取图像内容
     dataset = dataset.map(pre_read)
@@ -57,6 +58,10 @@ def pre_read(img_filename, label):
     image = tf.reshape(image, [200, 200, 1]) # reshape成200*200*1单通道灰度图像
     image = image / 255 #tf.image.per_image_standardization(image) # 图像标准化
     label = tf.reshape(label, [1])
+    print('-=' * 100)
+    print(image)
+    print(label)
+    print('-='*100)
     return image, label
 
 

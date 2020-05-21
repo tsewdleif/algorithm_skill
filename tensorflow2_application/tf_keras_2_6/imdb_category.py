@@ -9,12 +9,12 @@ import matplotlib.pyplot as plt
 
 def movie_review_category():
     '''
-    tf.keras处理序列问题：电影评论分类
+    tf.keras处理序列问题：电影评论分类（正面和负面评论）
     :return:
     '''
 #     电影评论数据获取
     data = tf.keras.datasets.imdb
-#     加载电影评论数据，可以看到索引有到两万多的，这里可以选择只要前一万个词的索引，一万个词以外的不给它编码抛弃掉
+#     加载电影评论数据，可以看到索引有到两万多的，这里可以选择只要前一万个词（指的是字典中对应的前一万个高频词）的索引，一万个词以外的不给它编码抛弃掉
     (x_train, y_train), (x_test, y_test) = data.load_data(num_words=10000)
     print(x_train.shape, y_train.shape, x_train[0]) #数据中每个元素是一个单词对应的索引
 #     对文本中的整数值进行编码。文本编码方式：tf-idf编码、word2vec embedding密集向量编码、one-hot编码。
@@ -57,6 +57,8 @@ def solve_overfitting():
     #     加载电影评论数据
     (x_train, y_train), (x_test, y_test) = data.load_data(num_words=10000)
     print(x_train.shape, y_train.shape, x_train[0])  # 数据中每个元素是一个单词对应的索引
+    print(type(x_train),type(y_train))
+    print(y_train)
     #     设置长度为300
     x_train = tf.keras.preprocessing.sequence.pad_sequences(x_train, 300)
     x_test = tf.keras.preprocessing.sequence.pad_sequences(x_test, 300)

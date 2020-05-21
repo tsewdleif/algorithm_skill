@@ -38,7 +38,7 @@ def logistic_regression():
     print(history.history.keys())
 #     将loss、acc的变化绘图
     plt.plot(history.epoch, history.history.get('loss'))
-    plt.show() # 每plot一次就show一次是画到不同的图中，如果plot多次只最后show一次则画到一张图中
+    plt.show() # show()两次，loss、acc就出现在两张图中
     plt.plot(history.epoch, history.history.get('acc'))
     plt.show()
 
@@ -52,6 +52,7 @@ def softmax_regression():
 #     加载内置数据: Fashion MNIST数据集是服装图片数据，包含70000张灰度图像，涵盖10个类别
     (train_image, train_label), (test_image, test_label) = tf.keras.datasets.fashion_mnist.load_data()
     print(train_image.shape, train_label.shape, test_image.shape, test_label.shape)
+    print(type(train_image),type(train_label))
     plt.imshow(train_image[0])
     plt.show()
     print(train_image[0]) # 0-255之间的RGB值
@@ -88,6 +89,6 @@ def softmax_regression():
 
 if __name__ == '__main__':
     # 逻辑回归模型
-    logistic_regression()
+    # logistic_regression()
     # softmax分类
     softmax_regression()
