@@ -17,6 +17,7 @@ def function_api():
     #     加载内置数据: Fashion MNIST数据集是服装图片数据，包含70000张灰度图像，涵盖10个类别
     (train_image, train_label), (test_image, test_label) = tf.keras.datasets.fashion_mnist.load_data()
     print(train_image.shape, train_label.shape, test_image.shape, test_label.shape)
+    print(type(train_image), type(train_label)) # numpy.ndarray numpy.ndarray
     print(train_image[0])  # 0-255之间的RGB值
     #     数据归一化
     train_image = train_image / 255

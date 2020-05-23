@@ -14,14 +14,18 @@ def create_dataset():
     '''
 #   使用一维列表创建dataset
     dataset = tf.data.Dataset.from_tensor_slices([1, 2, 3, 4, 5, 6])
+    a = np.arange(12).reshape((3,4))
+    print(type(a),type(a[0,0]))
+    print(a, a[0,0])
     for ele in dataset:
         print(ele)
+        print(type(ele.numpy()))
         print(ele.numpy()) # tensor对象传换成numpy对象
 #     使用二维列表创建dataset，其中的元素维度要一致
     dataset = tf.data.Dataset.from_tensor_slices([[1,2], [3, 4], [5, 6]])
     for ele in dataset:
         print(ele)
-        print(ele.numpy()) # tensor对象传换成numpy对象
+        print(type(ele.numpy()), ele.numpy()) # tensor对象传换成numpy对象
 #     使用字典来创建dataset
     dataset = tf.data.Dataset.from_tensor_slices({'a': [1, 2, 3, 4], 'b': [6,7,8,9], 'c':[12,13,14,15]})
     for ele in dataset:
@@ -42,18 +46,21 @@ def transform_data():
     :return:
     '''
     dataset = tf.data.Dataset.from_tensor_slices(np.array([1, 2, 3, 4, 5, 6, 7]))
-#     对数据进行乱序，参数为需要乱序的数据的的个数
-    dataset = dataset.shuffle(6)
+#     对数据进行乱序，参数为缓冲区buffersize大小
+    dataset = dataset.shuffle(4)
     for ele in dataset:
         print(ele.numpy())
+    print('-'*100)
 #     对数据进行重复，每一次都是乱序的，参数为重复的次数，如果不写默认无限次重复
     dataset = dataset.repeat(count=3)
     for ele in dataset:
         print(ele.numpy())
+    print("-2-"*100)
 #     取出batch_size大小的数据
     dataset = dataset.batch(3)
     for ele in dataset:
-        print(ele.numpy())
+        print(type(ele.numpy()),ele.numpy())
+    print("-3-"*100)
 #     使用函数对数据进行变换，根据函数对每一个元素变换
     dataset = dataset.map(tf.square)
     for ele in dataset:
@@ -66,6 +73,9 @@ def input_dataset():
     :return:
     '''
     (train_images, train_labels), (test_images, test_labels) = tf.keras.datasets.mnist.load_data()
+    print(type(train_images),type(train_labels)) # numpy.ndarray  numpy.ndarray
+    print(train_images)
+    print(train_labels)
 #     数据归一化
     train_images = train_images/255
     test_images = test_images/255

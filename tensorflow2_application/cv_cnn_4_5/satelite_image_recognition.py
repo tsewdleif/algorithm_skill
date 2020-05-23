@@ -5,7 +5,6 @@
 # @File : satelite_image_recognition.py
 
 import tensorflow as tf
-import numpy as np
 import matplotlib.pyplot as plt
 # pathlib是面向对象的路径工具，比os.path更好用一些
 import pathlib
@@ -176,7 +175,7 @@ def add_batch_normalization():
     model.add(tf.keras.layers.BatchNormalization())
     model.add(tf.keras.layers.Activation('relu'))
 
-    model.add(tf.keras.layers.MaxPooling2D()) # 卷积层后无需添加批标准化
+    model.add(tf.keras.layers.MaxPooling2D()) # 池化层后无需添加批标准化，以及后边的全局池化层后也无需批标准化
     model.add(tf.keras.layers.Conv2D(128, (3, 3)))
     model.add(tf.keras.layers.BatchNormalization())
     model.add(tf.keras.layers.Activation('relu'))

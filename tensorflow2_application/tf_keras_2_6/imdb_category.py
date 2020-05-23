@@ -57,11 +57,13 @@ def solve_overfitting():
     #     加载电影评论数据
     (x_train, y_train), (x_test, y_test) = data.load_data(num_words=10000)
     print(x_train.shape, y_train.shape, x_train[0])  # 数据中每个元素是一个单词对应的索引
-    print(type(x_train),type(y_train))
+    print(type(x_train),type(y_train)) # numpy.ndarray
+    print(x_train)
     print(y_train)
     #     设置长度为300
     x_train = tf.keras.preprocessing.sequence.pad_sequences(x_train, 300)
     x_test = tf.keras.preprocessing.sequence.pad_sequences(x_test, 300)
+    print(type(x_train)) # numpy.ndarray
     #     建立模型
     model = tf.keras.Sequential()
     #     训练成密集向量

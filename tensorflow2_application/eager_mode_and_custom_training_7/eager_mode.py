@@ -2,7 +2,7 @@
 # -*- encoding: utf-8 -*-
 # @Time : 2020/4/13 0013 下午 13:05
 # @Author : West Field
-# @File : eager_mode_and_custom_training_7.py
+# @File : eager_mode.py
 
 import tensorflow as tf
 import numpy as np
@@ -23,9 +23,12 @@ def eager_mode():
 #     矩阵相乘
     x = [[2,]]
     m = tf.matmul(x, x)
-    print(m, m.numpy())    # 与numpy的ndarray不同的是：张量是不可变的对象，不光可以存储在内存当中也可以存储在现存当中
+    print(type(x)) # tensorflow.python.framework.ops.EagerTensor
+    print(type(m))
+    print(m, m.numpy())    # 与numpy的ndarray不同的是：张量是不可变的对象，不光可以存储在内存当中也可以存储在GPU的显存当中
 #     建立一个常量
     a = tf.constant([[1, 2], [3, 4]])
+    print(type(a)) # tensorflow.python.framework.ops.EagerTensor
     print(a.numpy())
     b = tf.add(a, 1) # 相加
     c = tf.multiply(a, b) # 相乘
@@ -51,12 +54,14 @@ def variable_differential():
     '''
 #     定义变量
     v = tf.Variable(2)
+    print(type(v), v) # tensorflow.python.ops.resource_variable_ops.ResourceVariable
+    print(type(v+1)) # tensorflow.python.framework.ops.EagerTensor
     print(v+1) # 得到一个tensor对象
 #     修改变量值
     v.assign(5)
-    print(v)
+    print(type(v), v) # tensorflow.python.ops.resource_variable_ops.ResourceVariable
     v.assign_add(1)
-    print(v)
+    print(type(v), v)
     # 读取变量值，得到一个tensor对象
     print(v.read_value())
 #     记录运算过程，求解微分/梯度
@@ -85,6 +90,6 @@ def variable_differential():
 
 if __name__ == '__main__':
 #     eager模式
-#     eager_mode_and_custom_training_7()
+#     eager_mode()
 #     变量与自动微分运算
     variable_differential()

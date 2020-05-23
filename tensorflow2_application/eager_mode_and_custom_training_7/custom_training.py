@@ -5,7 +5,6 @@
 # @File : custom_training.py
 
 import tensorflow as tf
-import numpy as np
 
 def custom_training():
     '''
@@ -16,19 +15,21 @@ def custom_training():
     '''
     (train_image, train_labels), _ = tf.keras.datasets.mnist.load_data()
     print(train_image.shape, train_labels)
+    (a, b), (c, d) = tf.keras.datasets.mnist.load_data()
+    print(a.shape, c.shape)
 #     使用tf.data作为dataset加载进来
     train_image = tf.expand_dims(train_image, -1) # 扩增channel维度，-1表示扩增最后一个维度
     print(train_image.shape)
     train_image = tf.cast(train_image/255, tf.float32) # 改变数据类型，数据归一化
     train_labels = tf.cast(train_labels, tf.int64)
     dataset = tf.data.Dataset.from_tensor_slices((train_image, train_labels)) # 建立dataset
-    print(dataset)
+    print(dataset) # TensorSliceDataset
 #     数据混洗，设置batch
     dataset = dataset.shuffle(10000).batch(32)
-    print(dataset)
+    print(dataset) # BatchDataset
 #     建立模型
     model = tf.keras.Sequential([
-        tf.keras.layers.Conv2D(16, [3, 3], activation='relu', input_shape=(None, None, 1)), # kernal_size为16，None表示任意尺寸图像都可以输入进来
+        tf.keras.layers.Conv2D(16, [3, 3], activation='relu', input_shape=(None, None, 1)), # kernal_size数量为16，None表示任意尺寸图像都可以输入进来
         tf.keras.layers.Conv2D(32, [3, 3], activation='relu'),
         tf.keras.layers.GlobalMaxPooling2D(),
         tf.keras.layers.Dense(10) # 这里无需softmax激活，因为softmax只是对这10个输出进行归一化，最大的输出即对应哪个分类
@@ -41,16 +42,24 @@ def custom_training():
 #     写循环开始训练
     features, labels = next(iter(dataset)) # 把dataset变成可迭代对象
     print(features.shape, labels.shape)
-    predictions = model(features) # model是可调用的，得到预测数据
+    predictions = model(features) # model是可调用的，得到预测数据。没有训练就进行预测，效果比较差。
     print(predictions.shape)
     print(predictions)
+    print("-1-" * 100)
     print(tf.argmax(predictions, axis=1)) # 取最大值的位置，即为预测结果
     print(labels) # 实际的label
+    print(loss_func(labels, predictions))
+    # print(loss_func(labels, tf.argmax(predictions, axis=1))) # 会报错：类型不搭配错误
+    print("-2-"*100)
 #     开始训练
 #     定义一个损失函数，计算每个批次的损失值
     def loss(model, x, y):
         y_ = model(x)
-        return loss_func(y, y_)
+        lossss = loss_func(y, y_)
+        print('='*100)
+        print(lossss)
+        print('=' * 100)
+        return lossss
 #     建立一步的train，完成对一个批次的训练
     def train_step(model, images, labels):
         with tf.GradientTape() as t:
@@ -63,6 +72,9 @@ def custom_training():
     def train():
         for epoch in range(10):
             for (batch, (images, labels)) in enumerate(dataset):
+                # print(type(batch),batch) # int
+                # print(type(images), images) # tensorflow.python.framework.ops.EagerTensor   shape=(32, 28, 28, 1)
+                # print(type(labels), labels) # tensorflow.python.framework.ops.EagerTensor   shape=(32,)
                 train_step(model, images, labels)
             print("Epoch{} is finished.".format(epoch))
     train() # 开始训练
@@ -74,8 +86,10 @@ def metrics_module():
     '''
 #     计算准确率均值
     m = tf.keras.metrics.Mean('acc')
+    print(type(m), m) # tensorflow.python.keras.metrics.Mean
     m(10)
     m(20)
+    print(type(m), m) # tensorflow.python.keras.metrics.Mean
     print(m.result().numpy())
 #     在每个epoch之后，重置对象
     m.reset_states()
@@ -106,6 +120,7 @@ def metrics_module():
     #     因为这里是自定义循环，不需要编译这个模型
     #     写循环开始训练
     features, labels = next(iter(dataset))  # 把dataset变成可迭代对象
+    print(type(features), type(labels), type(next(iter(dataset))), type(dataset.take(1)))
     print(labels) # 真实值
 #     定义准确率
     a = tf.keras.metrics.SparseCategoricalAccuracy('acc')

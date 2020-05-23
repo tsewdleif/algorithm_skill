@@ -8,12 +8,15 @@ import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 
+np.set_printoptions(threshold=np.inf)
+
 def cnn_image_recognition():
     '''
     使用卷积神经网络进行图像识别，可以和多层感知器神经网络相比，它的特点和优势
     训练网络学习的是卷积核，先对卷积核按照某种规则随机初始化，然后进行网络训练学习
     对于图像任务，如果用多层感知器网络，参数会非常多，如果用卷积神经网络，只需学习卷积核即可，大大的减少了网络的参数
     卷积层用于提取图像的特征，不同的卷积核提取的特征不同，如用于提取边缘轮廓信息的卷积核
+    CNN使得图像逐渐变得小而厚，小是池化层的作用，变小使得视野变大，厚是卷积层的作用使得提取的特征变多（卷积核个数等于输出通道数，每个通道对应一个特征）
     :return:
     '''
     # 查看GPU是否可用
@@ -22,20 +25,24 @@ def cnn_image_recognition():
     fashion_mnist = tf.keras.datasets.fashion_mnist
     (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
     print(train_images.shape, train_labels.shape, test_images.shape, test_labels.shape)
+    print(train_images[0:2])
 #     前边使用多层感知器网络对数据的变换是扁平化数据，这里使用CNN对图像的处理是扩张成四维数据
     train_images = np.expand_dims(train_images, -1)
     test_images = np.expand_dims(test_images, -1)
     print(train_images.shape, test_images.shape) # 这里是(None, 28, 28, 1)表示是黑白图像，即(None, height, width, channel)
+    print(train_images[0:2])
 #     构建模型，一般第一层是卷积层，因为卷积层对图像特征的提取能力远大于全连接层
     model = tf.keras.Sequential() # 顺序模型
-    # 卷积层，32是feature的个数，即卷积核个数，即通道个数，卷积核一般选择3*3、5*5，一般用relu进行激活，padding方式采用same即保持卷积后的图像尺寸不变，默认padding是valid方式
+    # 卷积层，32是feature(特征，即输出的通道的个数)的个数，即卷积核个数，即通道个数，卷积核一般选择3*3、5*5，一般用relu进行激活，padding方式采用same即保持卷积后的图像尺寸不变，默认padding是valid方式
     model.add(tf.keras.layers.Conv2D(32, (3, 3), input_shape=train_images.shape[1:], activation='relu', padding='same'))
+#     查看当前model层的输出数据的形状
+    print(model.output_shape)
 #     池化层，一般默认是2*2池化，池化层使得图像的视野不断地变大
     model.add(tf.keras.layers.MaxPool2D())
 #     再添加卷积层，feature个数以2的指数递增，这样拟合能力更强，这里设置为64个卷积核
     model.add(tf.keras.layers.Conv2D(64, (3, 3), activation='relu'))
 #     在链接全连接层之前，卷积后是4维的数据，不能直接链接，这里需要变成一维数据，两种做法，添加flatten层做扁平化或者做全局池化，flatten会引入很多的参数，所以用全局池化比较好
-#     池化层，GlobalAveragePooling2D和MaxPool2D不同，GlobalAveragePooling2D代表全局的池化，即所有通道数据的平均
+#     池化层，GlobalAveragePooling2D和MaxPool2D不同，GlobalAveragePooling2D代表全局的池化，即每个通道取一个平均数
     model.add(tf.keras.layers.GlobalAveragePooling2D())
 #     全连接层
     model.add(tf.keras.layers.Dense(10, activation='softmax'))

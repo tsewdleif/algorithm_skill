@@ -23,6 +23,7 @@ def logistic_regression():
     print(data.iloc[:, -1].value_counts())
     x = data.iloc[:, :-1]
     y = data.iloc[:, -1].replace(-1, 0) # 这里改为负标签为0，正标签为1，-1、1适合于SVM
+    print(type(x), type(y)) # pandas.core.frame.DataFrame  pandas.core.series.Series
 #     建立模型
     model = tf.keras.Sequential()
     model.add(tf.keras.layers.Dense(4, input_shape=(15, ), activation='relu'))
@@ -52,7 +53,7 @@ def softmax_regression():
 #     加载内置数据: Fashion MNIST数据集是服装图片数据，包含70000张灰度图像，涵盖10个类别
     (train_image, train_label), (test_image, test_label) = tf.keras.datasets.fashion_mnist.load_data()
     print(train_image.shape, train_label.shape, test_image.shape, test_label.shape)
-    print(type(train_image),type(train_label))
+    print(type(train_image),type(train_label)) # numpy.ndarray  numpy.ndarray
     plt.imshow(train_image[0])
     plt.show()
     print(train_image[0]) # 0-255之间的RGB值

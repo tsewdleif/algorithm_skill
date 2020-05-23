@@ -26,6 +26,9 @@ def single_variable():
     # plt.show()
     x = data.Education
     y = data.Income
+    print(type(x), type(y)) # pandas.core.series.Series  pandas.core.series.Series
+    print(x)
+    print(y)
 #     定义顺序模型
     model = tf.keras.Sequential()
 #     添加层，设置输入输出
@@ -56,6 +59,9 @@ def multilayer_perceptron():
     # plt.show()
     x = data.iloc[:, 1:-1]
     y = data.iloc[:, -1]
+    print(type(x), type(y)) # pandas.core.frame.DataFrame       pandas.core.series.Series
+    print(x)
+    print(y)
 #     定义模型，直接写上层，省的再去添加，这里是两层，隐含层10个神经元，输出层一个神经元
     model = tf.keras.Sequential([tf.keras.layers.Dense(10, input_shape=(3,), activation='relu'),
                            tf.keras.layers.Dense(1)])
@@ -72,6 +78,6 @@ def multilayer_perceptron():
 
 if __name__ == "__main__":
     # 单变量的线性回归
-    single_variable()
+    # single_variable()
     # 多层感知器模型
     multilayer_perceptron()
